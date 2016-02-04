@@ -1,5 +1,5 @@
-import pygame, sys, rectangles
-from rectangles import *
+import pygame, sys, enemies
+from enemies import *
 from pygame.locals import *
 
 
@@ -13,16 +13,16 @@ def main():
     font = pygame.font.Font("./fonts/arial.ttf", 20)
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Math Game')
-    RECTANGULAR = Rectangle(10, font)
+    ENEMY = Enemy(10, font)
     while True:
         clock.tick(FPS)
         DISPLAYSURF.fill( (0,0,0) )
-        RECTANGULAR.update()
+        ENEMY.update(font)
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-        RECTANGULAR.Render(DISPLAYSURF)
+        ENEMY.Render(DISPLAYSURF)
         pygame.display.update()
         
 if __name__ == '__main__':
