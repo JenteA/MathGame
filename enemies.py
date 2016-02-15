@@ -18,10 +18,14 @@ class Enemy:
     def getPos(self):
         return self.rplayer.x, self.rplayer.y
     
-    def update(self, font):
+    def update(self, font, score, life):
         if self.rplayer.y == 480:
             self.rplayer.y = -50
             self.multiplText = self.multip.getExer(font)
+            score-=3
+            life -=1
+            hit = True
+            return hit
         else:
             self.rplayer.y +=1
             

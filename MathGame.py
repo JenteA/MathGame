@@ -1,12 +1,12 @@
-import pygame, sys, enemies
+import pygame, sys, enemies, showText
 from enemies import *
+from showText import *
 from pygame.locals import *
 from random import randint, randrange
 sys.path.append("./libraries/")
 import eztext
 
-
-FPS = 50
+FPS = 20
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
 clock = pygame.time.Clock()
@@ -14,11 +14,15 @@ ENEMY = []
 
 def main():
     pygame.init()
-    font = pygame.font.Font("./fonts/arial.ttf", 20)
+    SCORE = 0
+    LIFE = 100
+    HIT = False
+    font = pygame.font.Font(None, 32)
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Math Game')
     txtbx = eztext.Input(maxlength=5, color=(255,0,0), prompt='schrijf hier je uitkomst: ')
-    for x in range(3):
+    text = ShowText()
+    for x in range(1):
         enemy = Enemy(randint(1,590), -randint(50,100), font)
         ENEMY.append(enemy)
     while True:
@@ -34,14 +38,23 @@ def main():
                     for x in range(len(ENEMY)):
                         if txtbx.value == str(ENEMY[x].multip.sol):
                             ENEMY.pop(x)
+                            SCORE+=5
+                            for x in range(2):
+                                enemy = Enemy(randint(1,590), -randint(50,100), font)
+                                ENEMY.append(enemy)
                     txtbx.value = ""
         for x in range(len(ENEMY)):
-            ENEMY[x].update(font)
+            HIT = ENEMY[x].update(font, SCORE, LIFE)
             ENEMY[x].Render(DISPLAYSURF)
+            if HIT == True:
+                SCORE -= 3
+                LIFE -= 1
+                HIT = False
         txtbx.update(events)
         txtbx.set_pos(0,460)
         txtbx.draw(DISPLAYSURF)
+        text.renderScreenText(DISPLAYSURF, SCORE, font)
+        text.renderLifeBar(0, LIFE, DISPLAYSURF)
         pygame.display.update()
         
-if __name__ == '__main__':
-    main()
+if __name__ == '__main__': main()
